@@ -11,5 +11,4 @@ namespace MyDI\Container\Reference;
 
 class ParameterReference extends AbstractReference
 {
-
 }

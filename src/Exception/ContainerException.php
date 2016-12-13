@@ -1,6 +1,6 @@
 <?php
 
-namespace MyDI\exception\Exception;
+namespace MyDI\Container\Exception;
 
 use Interop\Container\Exception\ContainerException as InteropContainerException;
 

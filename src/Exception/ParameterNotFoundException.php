@@ -6,7 +6,7 @@
  * Time: 下午4:39
  */
 
-namespace MyDI\exception\Exception;
+namespace MyDI\Container\Exception;
 
 
 class ParameterNotFoundException extends \Exception

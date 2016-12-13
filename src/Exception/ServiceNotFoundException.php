@@ -6,7 +6,7 @@
  * Time: 下午4:37
  */
 
-namespace MyDI\exception\Exception;
+namespace MyDI\Container\Exception;
 
 use Interop\Container\Exception\NotFoundException as InteropNotFoundException;
 

@@ -9,12 +9,11 @@
 namespace MyDI\Container;
 
 
-use MongoDB\Driver\Exception\ConnectionException;
+use MyDI\Container\Exception\ContainerException;
+use MyDI\Container\Exception\ParameterNotFoundException;
 use MyDI\Container\Reference\ParameterReference;
 use MyDI\Container\Reference\ServiceReference;
-use MyDI\exception\Exception\ContainerException;
-use MyDI\exception\Exception\ParameterNotFoundException;
-use MyDI\exception\Exception\ServiceNotFoundException;
+use Interop\Container\ContainerInterface as InteropContainerInterface;
 
 class Container implements InteropContainerInterface {
 
@@ -35,7 +34,7 @@ class Container implements InteropContainerInterface {
     {
 
         if (!$this->has($name)) {
-            throw  new ServiceNotFoundException();
+            throw  new ServiceNotFoundException('Service not found: ' . $name);
         }
 
         if (!isset($this->serviceStore[$name])) {
@@ -123,7 +122,13 @@ class Container implements InteropContainerInterface {
         foreach ($callDefinitions as $callDefinition) {
             if (!is_array($callDefinition) || !isset($callDefinition['method'])) {
                 throw new ConnectionException($name . ' service calls must be arrays containing a \'method\' key');
+            } elseif (!is_callable([$service, $callDefinition['method']])) {
+                throw new ConnectionException($name . ' service asks for call to uncallable method: ' . $callDefinition['method']);
             }
+
+            $arguments = isset($callDefinition['arguments']) ? $this->resolveArguments($name, $callDefinition['arguments']) : [];
+
+            call_user_func_array([$service, $callDefinition['method'], $arguments]);
         }
     }
 
